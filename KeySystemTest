@@ -3,10 +3,10 @@ local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 local HttpService = game:GetService("HttpService")
 
--- Di sini script_key diisi dari luar, misal:
+-- Isi key dari luar (user ganti di sini)
 local script_key = "" -- kosong berarti suruh input UI nanti
 
--- Fungsi validasi key via API (ganti url sesuai backend mas)
+-- Fungsi validasi key via API (ganti url sesuai backend kamu)
 local function validateKey(key)
 	local url = "https://aec3a044-3296-4256-843f-ad4af62223da-00-1zh4wna2768rc.pike.replit.dev//validate?key=" .. key
 
@@ -133,7 +133,7 @@ local function createKeyUI(message)
 	end)
 end
 
--- MAIN LOGIC: cek script_key dulu
+-- MAIN LOGIC
 if script_key == nil or script_key == "" then
 	createKeyUI("Please enter your key to continue.")
 else
