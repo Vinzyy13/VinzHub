@@ -1,0 +1,146 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+local HttpService = game:GetService("HttpService")
+
+-- Di sini script_key diisi dari luar, misal:
+local script_key = "" -- kosong berarti suruh input UI nanti
+
+-- Fungsi validasi key via API (ganti url sesuai backend mas)
+local function validateKey(key)
+	local url = "https://aec3a044-3296-4256-843f-ad4af62223da-00-1zh4wna2768rc.pike.replit.dev//validate?key=" .. key
+
+	local success, response = pcall(function()
+		return HttpService:JSONDecode(game:HttpGet(url))
+	end)
+
+	if success and response and response.valid then
+		return true
+	else
+		warn("Key invalid atau expired:", response and response.message)
+		return false
+	end
+end
+
+-- Fungsi buat munculin UI key input
+local function createKeyUI(message)
+	local ScreenGui = Instance.new("ScreenGui", PlayerGui)
+	ScreenGui.Name = "KeySystemUI"
+	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+	local Frame = Instance.new("Frame", ScreenGui)
+	Frame.Size = UDim2.new(0, 400, 0, 300)
+	Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+	Frame.BorderSizePixel = 0
+	Frame.Active = true
+	Frame.Draggable = true
+
+	local FrameCorner = Instance.new("UICorner", Frame)
+	FrameCorner.CornerRadius = UDim.new(0, 12)
+
+	local Title = Instance.new("TextLabel", Frame)
+	Title.Size = UDim2.new(1, -50, 0, 40)
+	Title.Position = UDim2.new(0, 20, 0.05, 0)
+	Title.Text = "🔐 Key System | VinzHub"
+	Title.Font = Enum.Font.GothamBold
+	Title.TextSize = 22
+	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Title.BackgroundTransparency = 1
+	Title.TextXAlignment = Enum.TextXAlignment.Left
+
+	local Close = Instance.new("TextButton", Frame)
+	Close.Size = UDim2.new(0, 30, 0, 30)
+	Close.Position = UDim2.new(1, -35, 0, 5)
+	Close.Text = "×"
+	Close.Font = Enum.Font.GothamBold
+	Close.TextSize = 20
+	Close.TextColor3 = Color3.fromRGB(200, 200, 200)
+	Close.BackgroundTransparency = 1
+	Close.MouseButton1Click:Connect(function()
+		ScreenGui:Destroy()
+	end)
+
+	local Instructions = Instance.new("TextLabel", Frame)
+	Instructions.Size = UDim2.new(1, -40, 0, 30)
+	Instructions.Position = UDim2.new(0, 20, 0.23, 0)
+	Instructions.Text = message or "Enter your key below to unlock the script"
+	Instructions.Font = Enum.Font.Gotham
+	Instructions.TextSize = 14
+	Instructions.TextColor3 = Color3.fromRGB(180, 180, 180)
+	Instructions.BackgroundTransparency = 1
+	Instructions.TextWrapped = true
+
+	local TextBox = Instance.new("TextBox", Frame)
+	TextBox.Size = UDim2.new(0.8, 0, 0, 35)
+	TextBox.Position = UDim2.new(0.1, 0, 0.42, 0)
+	TextBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	TextBox.PlaceholderText = "Enter Key..."
+	TextBox.Text = ""
+	TextBox.Font = Enum.Font.Gotham
+	TextBox.TextSize = 16
+	TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+	TextBox.ClearTextOnFocus = false
+
+	local TextBoxCorner = Instance.new("UICorner", TextBox)
+	TextBoxCorner.CornerRadius = UDim.new(0, 6)
+
+	local GetKey = Instance.new("TextButton", Frame)
+	GetKey.Size = UDim2.new(0.35, 0, 0, 35)
+	GetKey.Position = UDim2.new(0.1, 0, 0.68, 0)
+	GetKey.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+	GetKey.Text = "Get Key"
+	GetKey.Font = Enum.Font.Gotham
+	GetKey.TextSize = 14
+	GetKey.TextColor3 = Color3.fromRGB(150, 150, 150)
+
+	local GetKeyCorner = Instance.new("UICorner", GetKey)
+	GetKeyCorner.CornerRadius = UDim.new(0, 6)
+
+	GetKey.MouseButton1Click:Connect(function()
+		setclipboard("https://vinzhub.netlify.app")
+	end)
+
+	local CheckKey = Instance.new("TextButton", Frame)
+	CheckKey.Size = UDim2.new(0.35, 0, 0, 35)
+	CheckKey.Position = UDim2.new(0.55, 0, 0.68, 0)
+	CheckKey.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+	CheckKey.Text = "Check Key"
+	CheckKey.Font = Enum.Font.GothamBold
+	CheckKey.TextSize = 14
+	CheckKey.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+	local CheckKeyCorner = Instance.new("UICorner", CheckKey)
+	CheckKeyCorner.CornerRadius = UDim.new(0, 6)
+
+	CheckKey.MouseButton1Click:Connect(function()
+		local enteredKey = TextBox.Text
+		if validateKey(enteredKey) then
+			TextBox.PlaceholderText = "✅ Correct Key!"
+			TextBox.Text = ""
+			wait(1)
+			ScreenGui:Destroy()
+
+			-- Jalankan script utama disini
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/SouthBronX-Main"))()
+		else
+			TextBox.PlaceholderText = "❌ Invalid Key. Try again."
+			TextBox.Text = ""
+			wait(1)
+			TextBox.PlaceholderText = "Enter Key..."
+		end
+	end)
+end
+
+-- MAIN LOGIC: cek script_key dulu
+if script_key == nil or script_key == "" then
+	createKeyUI("Please enter your key to continue.")
+else
+	if validateKey(script_key) then
+		-- Key valid, langsung jalanin script utama
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/SouthBronX-Main"))()
+	else
+		createKeyUI("Key invalid or expired! Please enter a valid key.")
+	end
+end
