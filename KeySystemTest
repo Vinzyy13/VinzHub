@@ -3,8 +3,8 @@ local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 local HttpService = game:GetService("HttpService")
 
--- Isi key dari luar (user ganti di sini)
-local script_key = "" -- kosong berarti suruh input UI nanti
+-- Isi key dari luar
+script_key = script_key or ""
 
 -- Fungsi validasi key via API (ganti url sesuai backend kamu)
 local function validateKey(key)
