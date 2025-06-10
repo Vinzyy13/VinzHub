@@ -123,7 +123,7 @@ local function createKeyUI(message)
 			ScreenGui:Destroy()
 
 			-- Jalankan script utama disini
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/SouthBronX-Main"))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ScriptTest"))()
 		else
 			TextBox.PlaceholderText = "❌ Invalid Key. Try again."
 			TextBox.Text = ""
