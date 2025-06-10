@@ -128,7 +128,7 @@ local function createKeyUI(message)
 end
 
 -- MAIN LOGIC
-if script_key == nil or script_key == "" then
+if script_key == nil or script_key == "" or script_key == " " then
 	createKeyUI("Please enter your key to continue.")
 else
 	local valid, msg, keyType = validateKey(script_key)
