@@ -119,7 +119,7 @@ local function createKeyUI(message)
 			-- Jalankan script utama di sini
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ScriptTest"))()
 		else
-			TextBox.PlaceholderText = "❌ " .. (msg or "Invalid Key")
+			TextBox.PlaceholderText = "" .. (msg or "Invalid Key")
 			TextBox.Text = ""
 			wait(1)
 			TextBox.PlaceholderText = "Enter Key..."
