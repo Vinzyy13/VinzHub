@@ -1,0 +1,230 @@
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local Lighting = game:GetService("Lighting")
+local RunService = game:GetService("RunService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace")
+
+local player = Players.LocalPlayer
+local camera = Workspace.CurrentCamera
+
+-- Backup kamera awal
+local originalFOV = camera.FieldOfView
+local originalCFrame = camera.CFrame
+
+-- Tambah efek blur
+local dof = Instance.new("DepthOfFieldEffect")
+dof.Name = "VinzDOF"
+dof.FocusDistance = 0
+dof.InFocusRadius = 0
+dof.NearIntensity = 1
+dof.FarIntensity = 1
+dof.Parent = Lighting
+
+local blur = Instance.new("BlurEffect")
+blur.Name = "VinzBlur"
+blur.Size = 24
+blur.Parent = Lighting
+
+-- Buat splash GUI
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.IgnoreGuiInset = true
+gui.ResetOnSpawn = false
+gui.Name = "SplashVinzHub"
+
+local textLabel = Instance.new("TextLabel", gui)
+textLabel.Size = UDim2.new(1, 0, 1, 0)
+textLabel.Position = UDim2.new(0, 0, 0, 0)
+textLabel.BackgroundTransparency = 1
+textLabel.Text = ""
+textLabel.TextColor3 = Color3.fromRGB(100, 200, 255)
+textLabel.TextStrokeColor3 = Color3.fromRGB(100, 200, 255)
+textLabel.TextStrokeTransparency = 0.2
+textLabel.TextScaled = true
+textLabel.Font = Enum.Font.GothamBlack
+
+-- Kamera zoom in
+TweenService:Create(camera, TweenInfo.new(1.2, Enum.EasingStyle.Sine), {
+	FieldOfView = 40
+}):Play()
+
+-- Animasi teks ketik
+local splashText = "Vinz Hub"
+for i = 1, #splashText do
+	textLabel.Text = string.sub(splashText, 1, i)
+	wait(0.2)
+end
+
+wait(1)
+
+-- Hapus teks 1 per 1
+for i = #splashText, 1, -1 do
+	textLabel.Text = string.sub(splashText, 1, i)
+	wait(0.05)
+end
+
+-- Reset kamera & hapus efek
+TweenService:Create(camera, TweenInfo.new(1), {
+	FieldOfView = originalFOV
+}):Play()
+
+if Lighting:FindFirstChild("VinzBlur") then
+	Lighting.VinzBlur:Destroy()
+end
+if Lighting:FindFirstChild("VinzDOF") then
+	Lighting.VinzDOF:Destroy()
+end
+
+gui:Destroy()
+wait(0.5)
+
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+WindUI:SetTheme("Dark")
+
+local Window = WindUI:CreateWindow({
+    Title = "VinzHub [All In One]",
+    Size = UDim2.fromOffset(450, 300),
+    SideBarWidth = 150,
+})
+
+-- Fungsi helper buat tombol loadstring
+local function addLoadButton(tab, title, url)
+    tab:Button({
+        Title = title,
+        Callback = function()
+            local success, err = pcall(function()
+                loadstring(game:HttpGet(url))()
+            end)
+            if not success then
+                warn("Failed to load " .. title .. ": " .. err)
+            end
+        end
+    })
+end
+
+-- Tab Main
+local MainTab = Window:Tab({ Title = "Admin", Icon = "terminal" })
+addLoadButton(MainTab, "Infinite Yield", "https://raw.githubusercontent.com/edgeiy/infiniteyield/master/source")
+
+-- Tab Grow A Garden
+local GaGTab = Window:Tab({ Title = "Grow A Garden", Icon = "code" })
+addLoadButton(GaGTab, "Speed Hub", "https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua")
+addLoadButton(GaGTab, "Lunor", "https://lunor.dev/loader")
+addLoadButton(GaGTab, "Native", "https://getnative.cc/script/loader")
+addLoadButton(GaGTab, "No Lag Hub", "https://rawscripts.net/raw/Grow-a-Garden-NoLag-Hub-no-key-38699")
+addLoadButton(GaGTab, "Alchemy", "https://scripts.alchemyhub.xyz")
+addLoadButton(GaGTab, "Thunder Z", "https://raw.githubusercontent.com/ThundarZ/Welcome/refs/heads/main/Main/GaG/Main.lua")
+addLoadButton(GaGTab, "ThanHub", "https://raw.githubusercontent.com/thantzy/thanhub/refs/heads/main/thanv1")
+addLoadButton(GaGTab, "NatHub", "https://get.nathub.xyz/loader")
+
+-- Tab Blox Fruit
+local BFTab = Window:Tab({ Title = "Blox Fruit", Icon = "code" })
+addLoadButton(BFTab, "Speed Hub", "https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua")
+addLoadButton(BFTab, "Redz Hub", "https://raw.githubusercontent.com/tlredz/Scripts/refs/heads/main/main.luau")
+addLoadButton(BFTab, "Ganteng Hub", "https://api.luarmor.net/files/v3/loaders/7a85f2faac358b77ba6e82fa37b203c7.lua")
+addLoadButton(BFTab, "HoHo Hub", "https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI")
+addLoadButton(BFTab, "Alchemy", "https://scripts.alchemyhub.xyz")
+addLoadButton(BFTab, "Thunder Z", "https://raw.githubusercontent.com/ThundarZ/Welcome/refs/heads/main/Main/GaG/Main.lua")
+addLoadButton(BFTab, "BlackTrap", "https://lua-library.btteam.net/script-auth.txt")
+addLoadButton(BFTab, "Volcano Hub", "https://raw.githubusercontent.com/indexeduu/BF-NewVer/refs/heads/main/V3New.lua")
+
+-- Tab Settings
+local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings" })
+local isDarkTheme = true
+SettingsTab:Toggle({
+    Title = "Dark Theme",
+    Value = true,
+    Callback = function(value)
+        isDarkTheme = value
+        if value then
+            WindUI:SetTheme("Dark")
+        else
+            WindUI:SetTheme("Light")
+        end
+    end
+})
+
+-- YANG DI BAWAH INI CUMA BUAT TOGGLE AJA, GAUSAH DI PAKE
+
+-- Hapus toggle button jika sudah ada sebelumnya
+local oldGui = game:GetService("CoreGui"):FindFirstChild("VinzzyHubToggleButton")
+if oldGui then oldGui:Destroy() end
+
+local UserInputService = game:GetService("UserInputService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local RunService = game:GetService("RunService")
+
+-- Toggle Button GUI setup (sama seperti sebelumnya)
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "VinzzyHubToggleButton"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.IgnoreGuiInset = true
+ScreenGui.Parent = game:GetService("CoreGui")
+
+local toggleButton = Instance.new("Frame")
+toggleButton.Name = "ToggleButton"
+toggleButton.Size = UDim2.new(0, 50, 0, 50)
+toggleButton.Position = UDim2.new(0, 20, 0, 100)
+toggleButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+toggleButton.BorderSizePixel = 0
+toggleButton.BackgroundTransparency = 0.2
+toggleButton.ZIndex = 1000
+toggleButton.Active = true
+toggleButton.Parent = ScreenGui
+
+local uicorner = Instance.new("UICorner")
+uicorner.CornerRadius = UDim.new(0, 10)
+uicorner.Parent = toggleButton
+
+local label = Instance.new("TextLabel")
+label.Text = "VINZ"
+label.Size = UDim2.new(1, 0, 1, 0)
+label.BackgroundTransparency = 1
+label.TextColor3 = Color3.fromRGB(220, 220, 220)
+label.Font = Enum.Font.SourceSansBold
+label.TextSize = 18
+label.ZIndex = 1001
+label.Parent = toggleButton
+
+-- Drag logic
+local dragging = false
+local dragInput, dragStart, startPos
+
+toggleButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = toggleButton.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+toggleButton.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    if dragging and dragInput then
+        local delta = dragInput.Position - dragStart
+        local newX = math.clamp(startPos.X.Offset + delta.X, 0, workspace.CurrentCamera.ViewportSize.X - toggleButton.AbsoluteSize.X)
+        local newY = math.clamp(startPos.Y.Offset + delta.Y, 0, workspace.CurrentCamera.ViewportSize.Y - toggleButton.AbsoluteSize.Y)
+        toggleButton.Position = UDim2.new(0, newX, 0, newY)
+    end
+end)
+
+-- Klik toggle pakai simulasi tombol G
+toggleButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.G, false, game)
+        task.wait(0.05)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.G, false, game)
+    end
+end)
