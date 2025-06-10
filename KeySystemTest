@@ -6,19 +6,19 @@ local HttpService = game:GetService("HttpService")
 -- Isi key dari luar
 script_key = script_key or ""
 
--- Fungsi validasi key via API (ganti url sesuai backend kamu)
+-- Fungsi validasi key via API
 local function validateKey(key)
-	local url = "https://aec3a044-3296-4256-843f-ad4af62223da-00-1zh4wna2768rc.pike.replit.dev//validate?key=" .. key
+	local url = "https://aec3a044-3296-4256-843f-ad4af62223da-00-1zh4wna2768rc.pike.replit.dev/validate?key=" .. key
 
 	local success, response = pcall(function()
 		return HttpService:JSONDecode(game:HttpGet(url))
 	end)
 
 	if success and response and response.valid then
-		return true
+		return true, response.message, response.type
 	else
 		warn("Key invalid atau expired:", response and response.message)
-		return false
+		return false, response and response.message or "Terjadi kesalahan saat validasi.", response and response.type or "unknown"
 	end
 end
 
@@ -37,8 +37,7 @@ local function createKeyUI(message)
 	Frame.Active = true
 	Frame.Draggable = true
 
-	local FrameCorner = Instance.new("UICorner", Frame)
-	FrameCorner.CornerRadius = UDim.new(0, 12)
+	Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 12)
 
 	local Title = Instance.new("TextLabel", Frame)
 	Title.Size = UDim2.new(1, -50, 0, 40)
@@ -82,9 +81,7 @@ local function createKeyUI(message)
 	TextBox.TextSize = 16
 	TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TextBox.ClearTextOnFocus = false
-
-	local TextBoxCorner = Instance.new("UICorner", TextBox)
-	TextBoxCorner.CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", TextBox).CornerRadius = UDim.new(0, 6)
 
 	local GetKey = Instance.new("TextButton", Frame)
 	GetKey.Size = UDim2.new(0.35, 0, 0, 35)
@@ -94,9 +91,7 @@ local function createKeyUI(message)
 	GetKey.Font = Enum.Font.Gotham
 	GetKey.TextSize = 14
 	GetKey.TextColor3 = Color3.fromRGB(150, 150, 150)
-
-	local GetKeyCorner = Instance.new("UICorner", GetKey)
-	GetKeyCorner.CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", GetKey).CornerRadius = UDim.new(0, 6)
 
 	GetKey.MouseButton1Click:Connect(function()
 		setclipboard("https://vinzhub.netlify.app")
@@ -110,22 +105,21 @@ local function createKeyUI(message)
 	CheckKey.Font = Enum.Font.GothamBold
 	CheckKey.TextSize = 14
 	CheckKey.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-	local CheckKeyCorner = Instance.new("UICorner", CheckKey)
-	CheckKeyCorner.CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", CheckKey).CornerRadius = UDim.new(0, 6)
 
 	CheckKey.MouseButton1Click:Connect(function()
 		local enteredKey = TextBox.Text
-		if validateKey(enteredKey) then
-			TextBox.PlaceholderText = "✅ Correct Key!"
+		local valid, msg, keyType = validateKey(enteredKey)
+		if valid then
+			TextBox.PlaceholderText = "" .. msg
 			TextBox.Text = ""
 			wait(1)
 			ScreenGui:Destroy()
 
-			-- Jalankan script utama disini
+			-- Jalankan script utama di sini
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ScriptTest"))()
 		else
-			TextBox.PlaceholderText = "❌ Invalid Key. Try again."
+			TextBox.PlaceholderText = "❌ " .. (msg or "Invalid Key")
 			TextBox.Text = ""
 			wait(1)
 			TextBox.PlaceholderText = "Enter Key..."
@@ -137,10 +131,10 @@ end
 if script_key == nil or script_key == "" then
 	createKeyUI("Please enter your key to continue.")
 else
-	if validateKey(script_key) then
-		-- Key valid, langsung jalanin script utama
+	local valid, msg, keyType = validateKey(script_key)
+	if valid then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ScriptTest"))()
 	else
-		createKeyUI("Key invalid or expired! Please enter a valid key.")
+		createKeyUI("❌ " .. (msg or "Key invalid or expired!"))
 	end
 end
