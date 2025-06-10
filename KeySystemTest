@@ -139,7 +139,7 @@ if script_key == nil or script_key == "" then
 else
 	if validateKey(script_key) then
 		-- Key valid, langsung jalanin script utama
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/SouthBronX-Main"))()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ScriptTest"))()
 	else
 		createKeyUI("Key invalid or expired! Please enter a valid key.")
 	end
