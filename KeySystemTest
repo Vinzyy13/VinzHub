@@ -135,6 +135,6 @@ else
 	if valid then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ScriptTest"))()
 	else
-		createKeyUI("❌ " .. (msg or "Key invalid or expired!"))
+		createKeyUI("" .. (msg or "Key invalid or expired!"))
 	end
 end
