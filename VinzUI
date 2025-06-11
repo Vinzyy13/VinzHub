@@ -1,4 +1,4 @@
--- VINZHUB UI v1.0 (Custom WindUI Build)
+-- VinzHub UI v1.0
 
 local VinzHubUI = {}
 
@@ -6,7 +6,7 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 
--- Blur background (frosted glass)
+-- Blur background
 local blur = Instance.new("BlurEffect")
 blur.Size = 16
 blur.Parent = game:GetService("Lighting")
@@ -28,11 +28,9 @@ MainFrame.BorderSizePixel = 0
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 MainFrame.Parent = ScreenGui
 
--- UICorner biar rounded
 local corner = Instance.new("UICorner", MainFrame)
 corner.CornerRadius = UDim.new(0, 15)
 
--- Gradient ungu ke biru
 local gradient = Instance.new("UIGradient", MainFrame)
 gradient.Color = ColorSequence.new{
 	ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 0, 255)),
@@ -40,7 +38,6 @@ gradient.Color = ColorSequence.new{
 }
 gradient.Rotation = 45
 
--- Title Text
 local Title = Instance.new("TextLabel", MainFrame)
 Title.Size = UDim2.new(1, 0, 0, 50)
 Title.BackgroundTransparency = 1
@@ -50,7 +47,6 @@ Title.TextStrokeTransparency = 0.8
 Title.Font = Enum.Font.GothamBold
 Title.TextScaled = true
 
--- Contoh Button
 local Button = Instance.new("TextButton", MainFrame)
 Button.Size = UDim2.new(0, 200, 0, 50)
 Button.Position = UDim2.new(0.5, -100, 0.5, -25)
@@ -71,7 +67,6 @@ Button.MouseButton1Click:Connect(function()
 	})
 end)
 
--- Export function
 function VinzHubUI:Destroy()
 	ScreenGui:Destroy()
 	if blur then blur:Destroy() end
