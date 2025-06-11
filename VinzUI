@@ -1,0 +1,80 @@
+-- VINZHUB UI v1.0 (Custom WindUI Build)
+
+local VinzHubUI = {}
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+
+-- Blur background (frosted glass)
+local blur = Instance.new("BlurEffect")
+blur.Size = 16
+blur.Parent = game:GetService("Lighting")
+
+-- Base UI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "VinzHubUI"
+ScreenGui.Parent = PlayerGui
+ScreenGui.IgnoreGuiInset = true
+ScreenGui.ResetOnSpawn = false
+
+-- Main Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 500, 0, 350)
+MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
+MainFrame.BackgroundTransparency = 0.3
+MainFrame.BackgroundColor3 = Color3.fromRGB(80, 0, 180)
+MainFrame.BorderSizePixel = 0
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Parent = ScreenGui
+
+-- UICorner biar rounded
+local corner = Instance.new("UICorner", MainFrame)
+corner.CornerRadius = UDim.new(0, 15)
+
+-- Gradient ungu ke biru
+local gradient = Instance.new("UIGradient", MainFrame)
+gradient.Color = ColorSequence.new{
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 0, 255)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 255))
+}
+gradient.Rotation = 45
+
+-- Title Text
+local Title = Instance.new("TextLabel", MainFrame)
+Title.Size = UDim2.new(1, 0, 0, 50)
+Title.BackgroundTransparency = 1
+Title.Text = "VinzHub UI"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextStrokeTransparency = 0.8
+Title.Font = Enum.Font.GothamBold
+Title.TextScaled = true
+
+-- Contoh Button
+local Button = Instance.new("TextButton", MainFrame)
+Button.Size = UDim2.new(0, 200, 0, 50)
+Button.Position = UDim2.new(0.5, -100, 0.5, -25)
+Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Button.BackgroundTransparency = 0.1
+Button.Text = "Click Me!"
+Button.Font = Enum.Font.GothamSemibold
+Button.TextScaled = true
+Button.TextColor3 = Color3.fromRGB(0, 0, 0)
+local buttonCorner = Instance.new("UICorner", Button)
+buttonCorner.CornerRadius = UDim.new(0, 10)
+
+Button.MouseButton1Click:Connect(function()
+	game.StarterGui:SetCore("SendNotification", {
+		Title = "VinzHub UI";
+		Text = "Button Clicked!";
+		Duration = 3;
+	})
+end)
+
+-- Export function
+function VinzHubUI:Destroy()
+	ScreenGui:Destroy()
+	if blur then blur:Destroy() end
+end
+
+return VinzHubUI
