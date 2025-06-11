@@ -1,32 +1,26 @@
--- VinzHub UI v1.0
-
-local VinzHubUI = {}
-
+local VinzHub = {}
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 
--- Blur background
+-- Blur background (sekali aja)
 local blur = Instance.new("BlurEffect")
 blur.Size = 16
 blur.Parent = game:GetService("Lighting")
 
--- Base UI
-local ScreenGui = Instance.new("ScreenGui")
+-- Create ScreenGui
+local ScreenGui = Instance.new("ScreenGui", PlayerGui)
 ScreenGui.Name = "VinzHubUI"
-ScreenGui.Parent = PlayerGui
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ResetOnSpawn = false
 
 -- Main Frame
-local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 500, 0, 350)
-MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 550, 0, 400)
+MainFrame.Position = UDim2.new(0.5, -275, 0.5, -200)
 MainFrame.BackgroundTransparency = 0.3
 MainFrame.BackgroundColor3 = Color3.fromRGB(80, 0, 180)
 MainFrame.BorderSizePixel = 0
-MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-MainFrame.Parent = ScreenGui
 
 local corner = Instance.new("UICorner", MainFrame)
 corner.CornerRadius = UDim.new(0, 15)
@@ -38,38 +32,80 @@ gradient.Color = ColorSequence.new{
 }
 gradient.Rotation = 45
 
+-- Title
 local Title = Instance.new("TextLabel", MainFrame)
 Title.Size = UDim2.new(1, 0, 0, 50)
 Title.BackgroundTransparency = 1
 Title.Text = "VinzHub UI"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextStrokeTransparency = 0.8
 Title.Font = Enum.Font.GothamBold
 Title.TextScaled = true
 
-local Button = Instance.new("TextButton", MainFrame)
-Button.Size = UDim2.new(0, 200, 0, 50)
-Button.Position = UDim2.new(0.5, -100, 0.5, -25)
-Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Button.BackgroundTransparency = 0.1
-Button.Text = "Click Me!"
-Button.Font = Enum.Font.GothamSemibold
-Button.TextScaled = true
-Button.TextColor3 = Color3.fromRGB(0, 0, 0)
-local buttonCorner = Instance.new("UICorner", Button)
-buttonCorner.CornerRadius = UDim.new(0, 10)
+-- SideBar (buat tab system)
+local SideBar = Instance.new("Frame", MainFrame)
+SideBar.Size = UDim2.new(0, 130, 1, -50)
+SideBar.Position = UDim2.new(0, 0, 0, 50)
+SideBar.BackgroundTransparency = 0.4
+SideBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+SideBar.BorderSizePixel = 0
 
-Button.MouseButton1Click:Connect(function()
-	game.StarterGui:SetCore("SendNotification", {
-		Title = "VinzHub UI";
-		Text = "Button Clicked!";
-		Duration = 3;
-	})
-end)
+local UIListLayout = Instance.new("UIListLayout", SideBar)
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 5)
 
-function VinzHubUI:Destroy()
-	ScreenGui:Destroy()
-	if blur then blur:Destroy() end
+-- Main Content Holder
+local ContentFrame = Instance.new("Frame", MainFrame)
+ContentFrame.Size = UDim2.new(1, -130, 1, -50)
+ContentFrame.Position = UDim2.new(0, 130, 0, 50)
+ContentFrame.BackgroundTransparency = 1
+
+-- Tab System
+local Tabs = {}
+
+function VinzHub:CreateTab(tabName)
+	local Button = Instance.new("TextButton", SideBar)
+	Button.Size = UDim2.new(1, 0, 0, 40)
+	Button.Text = tabName
+	Button.BackgroundTransparency = 0.2
+	Button.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+	Button.Font = Enum.Font.GothamBold
+	Button.TextColor3 = Color3.new(1, 1, 1)
+	local corner = Instance.new("UICorner", Button)
+	corner.CornerRadius = UDim.new(0, 8)
+
+	local TabFrame = Instance.new("Frame", ContentFrame)
+	TabFrame.Size = UDim2.new(1, 0, 1, 0)
+	TabFrame.Visible = false
+	TabFrame.BackgroundTransparency = 1
+
+	Tabs[tabName] = TabFrame
+
+	Button.MouseButton1Click:Connect(function()
+		for _, v in pairs(ContentFrame:GetChildren()) do
+			if v:IsA("Frame") then v.Visible = false end
+		end
+		TabFrame.Visible = true
+	end)
+
+	if not ContentFrame:FindFirstChildOfClass("Frame") then
+		TabFrame.Visible = true
+	end
+
+	return TabFrame
 end
 
-return VinzHubUI
+function VinzHub:CreateButton(tabFrame, text, callback)
+	local Button = Instance.new("TextButton", tabFrame)
+	Button.Size = UDim2.new(0, 180, 0, 40)
+	Button.Position = UDim2.new(0, 20, 0, 20 + #tabFrame:GetChildren() * 45)
+	Button.BackgroundColor3 = Color3.fromRGB(100, 0, 200)
+	Button.Text = text
+	Button.Font = Enum.Font.GothamBold
+	Button.TextColor3 = Color3.new(1,1,1)
+	local corner = Instance.new("UICorner", Button)
+	corner.CornerRadius = UDim.new(0, 10)
+
+	Button.MouseButton1Click:Connect(callback)
+end
+
+return VinzHub
