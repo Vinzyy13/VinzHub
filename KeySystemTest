@@ -117,7 +117,7 @@ local function createKeyUI(message)
 			ScreenGui:Destroy()
 
 			-- Jalankan script utama di sini
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ScriptTest"))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ALL-IN-ONE"))()
 		else
 			TextBox.PlaceholderText = "" .. (msg or "Invalid Key")
 			TextBox.Text = ""
@@ -133,7 +133,7 @@ if script_key == nil or script_key == "" or script_key == " " then
 else
 	local valid, msg, keyType = validateKey(script_key)
 	if valid then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ScriptTest"))()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/ALL-IN-ONE"))()
 	else
 		createKeyUI("" .. (msg or "Key invalid or expired!"))
 	end
