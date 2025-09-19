@@ -1,0 +1,79 @@
+print("VinzHub Universal Loader")
+
+function buatNotifikasi(title, message)
+    local NotifGui = Instance.new("ScreenGui")
+    NotifGui.Name = "VinzNotifGui"
+    NotifGui.Parent = game:GetService("CoreGui")
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = NotifGui
+    MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Size = UDim2.new(0, 300, 0, 60)
+    MainFrame.Position = UDim2.new(0.5, -150, 0, -70)
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 8)
+    UICorner.Parent = MainFrame
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Name = "Title"
+    TitleLabel.Parent = MainFrame
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Size = UDim2.new(1, -10, 0, 25)
+    TitleLabel.Position = UDim2.new(0, 5, 0, 0)
+    TitleLabel.Font = Enum.Font.SourceSansBold
+    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.TextSize = 18
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLabel.Text = title
+    local MessageLabel = Instance.new("TextLabel")
+    MessageLabel.Name = "Message"
+    MessageLabel.Parent = MainFrame
+    MessageLabel.BackgroundTransparency = 1
+    MessageLabel.Size = UDim2.new(1, -10, 0, 20)
+    MessageLabel.Position = UDim2.new(0, 5, 0, 28)
+    MessageLabel.Font = Enum.Font.SourceSans
+    MessageLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+    MessageLabel.TextSize = 14
+    MessageLabel.TextXAlignment = Enum.TextXAlignment.Left
+    MessageLabel.Text = message
+    local TweenService = game:GetService("TweenService")
+    local tweenInfoIn = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local tweenInfoOut = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+    local tweenIn = TweenService:Create(MainFrame, tweenInfoIn, {Position = UDim2.new(0.5, -150, 0, 10)})
+    tweenIn:Play()
+    task.wait(4)
+    local tweenOut = TweenService:Create(MainFrame, tweenInfoOut, {Position = UDim2.new(0.5, -150, 0, -70)})
+    tweenOut:Play()
+    game:GetService("Debris"):AddItem(NotifGui, 0.6)
+end
+
+local gameScripts = {
+    [121864768012064] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/Fish-It", -- Fish It
+    [123224294054165] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-atin", -- Mount Atin
+    [102234703920418] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-daun", -- Mount Daun
+}
+
+
+local currentGameId = game.PlaceId
+local scriptUrl = gameScripts[currentGameId]
+
+if scriptUrl then
+    local success, gameInfo = pcall(function()
+        return game:GetService("MarketplaceService"):GetProductInfo(currentGameId)
+    end)
+    local gameName = success and gameInfo.Name or "Game"
+
+    print("✅ Game Detected: " .. gameName)
+    print("🚀 Running Script...")
+    
+    buatNotifikasi("VinzHub", gameName .. " Successfully loaded")
+    
+    pcall(function()
+        loadstring(game:HttpGet(scriptUrl))()
+    end)
+    
+else
+
+    warn("⚠️ This Game (ID: " .. currentGameId .. ") Not Supported.")
+    buatNotifikasi("VinzHub", "This Game Not Supported.")
+end
