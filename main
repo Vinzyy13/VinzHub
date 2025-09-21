@@ -62,6 +62,7 @@ local gameScripts = {
     [121864768012064] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/Fish-It", -- Fish It
     [123224294054165] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-atin", -- Mount Atin
     [102234703920418] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-daun", -- Mount Daun
+    [128473079243102] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-arunika", -- Mount Arunika
 }
 
 local currentGameId = game.PlaceId
