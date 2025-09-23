@@ -64,6 +64,7 @@ local gameScripts = {
     [102234703920418] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-daun", -- Mount Daun
     [128473079243102] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-arunika", -- Mount Arunika
     [2693023319] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/antartica", -- Expedition Antartica
+    [106525193781380] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-sibuatan", -- Mount Sibuatan
 }
 
 local currentGameId = game.PlaceId
