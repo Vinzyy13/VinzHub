@@ -64,8 +64,8 @@ end
 
 local gameScripts = {
     [121864768012064] = {
-        Lite = "https://script.vinzhub.com/giaxvcq82ah9n9q",
-        Premium = "https://script.vinzhub.com/ulceo5zo6lywlj9"
+        Lite = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/pis-lite",
+        Premium = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/pis-main"
     }, 
     
     [123224294054165] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-atin", -- Mount Atin
