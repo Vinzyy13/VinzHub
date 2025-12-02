@@ -5,7 +5,7 @@ if _G.lite_mode == nil then
     _G.lite_mode = false
 end
 
-function buatNotifikasi(title, message)
+-- function buatNotifikasi(title, message)
     local NotifGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
     NotifGui.Name = "VinzNotifGui"
     
