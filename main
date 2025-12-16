@@ -65,7 +65,7 @@ local gameScripts = {
     [128473079243102] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-arunika", -- Mount Arunika
     [2693023319] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/antartica", -- Expedition Antartica
     [106525193781380] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-sibuatan", -- Mount Sibuatan
-    [93978595733734] = "https://script.vinzhub.com/2cgxytxbox0j4sp", -- Violance District
+    [93978595733734] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/VD", -- Violance District
     [127742093697776] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/PVB", -- Plant VS Brainrot
 }
 
