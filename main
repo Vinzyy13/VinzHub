@@ -66,7 +66,7 @@ local gameScripts = {
     [2693023319] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/antartica", -- Expedition Antartica
     [106525193781380] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/mt-sibuatan", -- Mount Sibuatan
     [93978595733734] = "https://script.vinzhub.com/2cgxytxbox0j4sp", -- Violance District
-    [127742093697776] = "https://script.vinzhub.com/fw7z1deq64u8jr6", -- Plant VS Brainrot
+    [127742093697776] = "https://raw.githubusercontent.com/Vinzyy13/VinzHub/refs/heads/main/PVB", -- Plant VS Brainrot
 }
 
 local currentGameId = game.PlaceId
